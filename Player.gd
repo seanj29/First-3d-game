@@ -6,6 +6,8 @@ export var fall_acceleration = 75
 
 export var jump_impulse = 20
 
+export var bounce_impulse = 16
+
 var velocity = Vector3.ZERO
 
 # Called when the node enters the scene tree for the first time.
@@ -39,3 +41,15 @@ func _physics_process(delta):
 		velocity.y += jump_impulse
 	#Moving the character
 	velocity = move_and_slide(velocity, Vector3.UP)
+
+	for index in range(get_slide_count()):
+		# We check every collision that occured this frame.
+		var collision = get_slide_collision(index)
+		# If we collide with a monster...
+		if collision.collider.is_in_group("mob"):
+			var mob = collision.collider
+			# ... we check if we are hitting it from above
+			if Vector3.UP.dot(collision.normal) > 0.1:
+				#If so, we squash it and bounce
+				mob.squash()
+				velocity.y = bounce_impulse
