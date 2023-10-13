@@ -4,6 +4,8 @@ export var speed = 14
 
 export var fall_acceleration = 75
 
+export var jump_impulse = 20
+
 var velocity = Vector3.ZERO
 
 # Called when the node enters the scene tree for the first time.
@@ -32,5 +34,8 @@ func _physics_process(delta):
 	velocity.z = direction.z * speed
 	#Vertical Velocity
 	velocity.y -= fall_acceleration * delta
+	# Jumping
+	if is_on_floor() and Input.is_action_just_pressed("jump"):
+		velocity.y += jump_impulse
 	#Moving the character
 	velocity = move_and_slide(velocity, Vector3.UP)
