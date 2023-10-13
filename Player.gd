@@ -1,5 +1,9 @@
 extends KinematicBody
 
+# Emitted when the player was hit by a mob
+
+signal hit
+
 export var speed = 14
 
 export var fall_acceleration = 75
@@ -53,3 +57,10 @@ func _physics_process(delta):
 				#If so, we squash it and bounce
 				mob.squash()
 				velocity.y = bounce_impulse
+
+func die():
+	emit_signal("hit")
+	queue_free()
+
+func _on_MobDetector_body_entered(_body:Node):
+	die()
