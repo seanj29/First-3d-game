@@ -27,6 +27,8 @@ func initialize(start_position, player_position):
 	velocity = Vector3.FORWARD * random_speed
 	velocity = velocity.rotated(Vector3.UP, rotation.y)
 
+	$AnimationPlayer.playback_speed = random_speed / min_speed
+
 func squash():
 	emit_signal("squashed")
 	queue_free()
